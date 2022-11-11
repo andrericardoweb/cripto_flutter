@@ -1,10 +1,10 @@
-class Moeda {
+class Coin {
   String icon;
   String name;
   String abbreviation;
   double price;
 
-  Moeda(
+  Coin(
       {required this.icon,
       required this.name,
       required this.abbreviation,
