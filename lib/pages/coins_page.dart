@@ -1,4 +1,5 @@
 import 'package:cripto_flutter/models/coin.dart';
+import 'package:cripto_flutter/pages/coins_details_page.dart';
 import 'package:cripto_flutter/repositories/coin_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -43,6 +44,15 @@ class _CoinsPageState extends State<CoinsPage> {
       }
     }
 
+    showDetails(Coin coin) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => CoinsDetailsPage(coin: coin),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: appBarDynamic(),
       body: ListView.separated(
@@ -69,6 +79,7 @@ class _CoinsPageState extends State<CoinsPage> {
                     : selected.add(table[coin]);
               });
             },
+            onTap: () => showDetails(table[coin]),
           );
         },
         padding: const EdgeInsets.all(16.0),
