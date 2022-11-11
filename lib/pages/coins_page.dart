@@ -18,10 +18,33 @@ class _CoinsPageState extends State<CoinsPage> {
     final table = CoinRepository.table;
     NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
+    appBarDynamic() {
+      if (selected.isEmpty) {
+        return AppBar(
+          title: const Text('Criptomoedas'),
+        );
+      } else {
+        return AppBar(
+          leading: IconButton(
+              onPressed: () {
+                setState(() {
+                  selected = [];
+                });
+              },
+              icon: const Icon(Icons.arrow_back)),
+          title: Text(
+            '${selected.length} selecionadas',
+            style: const TextStyle(color: Colors.black87),
+          ),
+          backgroundColor: Colors.blueGrey[50],
+          elevation: 1,
+          iconTheme: const IconThemeData(color: Colors.black87),
+        );
+      }
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Criptomoedas'),
-      ),
+      appBar: appBarDynamic(),
       body: ListView.separated(
         itemBuilder: (BuildContext context, int coin) {
           return ListTile(
@@ -52,6 +75,17 @@ class _CoinsPageState extends State<CoinsPage> {
         separatorBuilder: (_, __) => const Divider(),
         itemCount: table.length,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: (selected.isNotEmpty)
+          ? FloatingActionButton.extended(
+              onPressed: () {},
+              icon: const Icon(Icons.favorite),
+              label: const Text(
+                'FAVORITAR',
+                style: TextStyle(letterSpacing: 0, fontWeight: FontWeight.bold),
+              ),
+            )
+          : null,
     );
   }
 }
