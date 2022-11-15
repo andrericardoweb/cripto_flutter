@@ -1,4 +1,4 @@
-import 'package:cripto_flutter/pages/coins_page.dart';
+import 'package:cripto_flutter/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class MyApplication extends StatelessWidget {
@@ -9,10 +9,8 @@ class MyApplication extends StatelessWidget {
     return MaterialApp(
       title: 'Criptomoedas',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.indigo
-      ),
-      home: const CoinsPage(),
+      theme: ThemeData(primarySwatch: Colors.indigo),
+      home: const HomePage(),
     );
   }
 }

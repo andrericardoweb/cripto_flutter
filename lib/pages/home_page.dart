@@ -1,0 +1,61 @@
+import 'package:cripto_flutter/pages/coins_page.dart';
+import 'package:cripto_flutter/pages/favorites_page.dart';
+import 'package:flutter/material.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int currentPage = 0;
+  late PageController pc;
+
+  final pages = [const CoinsPage(), const FavoritesPage()];
+
+  setPageCurrent(page) {
+    setState(() {
+      currentPage = page;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    pc = PageController(initialPage: currentPage);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PageView(
+        controller: pc,
+        children: pages,
+        onPageChanged: setPageCurrent,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentPage,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Todas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favoritas',
+          ),
+        ],
+        onTap: (page) {
+          pc.animateToPage(
+            page,
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.ease,
+          );
+        },
+        backgroundColor: Colors.grey[100],
+      ),
+    );
+  }
+}

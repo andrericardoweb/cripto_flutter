@@ -1,8 +1,10 @@
 import 'package:cripto_flutter/models/coin.dart';
 import 'package:cripto_flutter/pages/coins_details_page.dart';
 import 'package:cripto_flutter/repositories/coin_repository.dart';
+import 'package:cripto_flutter/repositories/favorites_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
   const CoinsPage({super.key});
@@ -12,46 +14,49 @@ class CoinsPage extends StatefulWidget {
 }
 
 class _CoinsPageState extends State<CoinsPage> {
+  final table = CoinRepository.table;
+  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   List<Coin> selected = [];
+  late FavoritesRepository favorites;
+
+  appBarDynamic() {
+    if (selected.isEmpty) {
+      return AppBar(
+        title: const Text('Criptomoedas'),
+      );
+    } else {
+      return AppBar(
+        leading: IconButton(
+            onPressed: cleanSelected, icon: const Icon(Icons.arrow_back)),
+        title: Text(
+          '${selected.length} selecionadas',
+          style: const TextStyle(color: Colors.black87),
+        ),
+        backgroundColor: Colors.blueGrey[50],
+        elevation: 1,
+        iconTheme: const IconThemeData(color: Colors.black87),
+      );
+    }
+  }
+
+  showDetails(Coin coin) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CoinsDetailsPage(coin: coin),
+      ),
+    );
+  }
+
+  cleanSelected() {
+    setState(() {
+      selected = [];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final table = CoinRepository.table;
-    NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
-
-    appBarDynamic() {
-      if (selected.isEmpty) {
-        return AppBar(
-          title: const Text('Criptomoedas'),
-        );
-      } else {
-        return AppBar(
-          leading: IconButton(
-              onPressed: () {
-                setState(() {
-                  selected = [];
-                });
-              },
-              icon: const Icon(Icons.arrow_back)),
-          title: Text(
-            '${selected.length} selecionadas',
-            style: const TextStyle(color: Colors.black87),
-          ),
-          backgroundColor: Colors.blueGrey[50],
-          elevation: 1,
-          iconTheme: const IconThemeData(color: Colors.black87),
-        );
-      }
-    }
-
-    showDetails(Coin coin) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => CoinsDetailsPage(coin: coin),
-        ),
-      );
-    }
+    favorites = Provider.of<FavoritesRepository>(context);
 
     return Scaffold(
       appBar: appBarDynamic(),
@@ -65,9 +70,16 @@ class _CoinsPageState extends State<CoinsPage> {
                     child: Icon(Icons.check),
                   )
                 : SizedBox(width: 40, child: Image.asset(table[coin].icon)),
-            title: Text(
-              table[coin].name,
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+            title: Row(
+              children: [
+                Text(
+                  table[coin].name,
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w500),
+                ),
+                if (favorites.listCoin.contains(table[coin]))
+                  const Icon(Icons.circle, color: Colors.amber, size: 8)
+              ],
             ),
             trailing: Text(real.format(table[coin].price)),
             selected: selected.contains(table[coin]),
@@ -89,7 +101,10 @@ class _CoinsPageState extends State<CoinsPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: (selected.isNotEmpty)
           ? FloatingActionButton.extended(
-              onPressed: () {},
+              onPressed: () {
+                favorites.saveAll(selected);
+                cleanSelected();
+              },
               icon: const Icon(Icons.favorite),
               label: const Text(
                 'FAVORITAR',
