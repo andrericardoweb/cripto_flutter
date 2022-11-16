@@ -107,7 +107,7 @@ class _CoinsPageState extends State<CoinsPage> {
                   style: const TextStyle(
                       fontSize: 17, fontWeight: FontWeight.w500),
                 ),
-                if (favorites.listCoin.contains(table[coin]))
+                if (favorites.listCoin.any((favorite) => favorite.abbreviation == table[coin].abbreviation))
                   const Icon(Icons.circle, color: Colors.amber, size: 8)
               ],
             ),

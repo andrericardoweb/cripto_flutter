@@ -1,7 +1,9 @@
+import 'package:cripto_flutter/configs/app_settings.dart';
 import 'package:cripto_flutter/models/coin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CoinsDetailsPage extends StatefulWidget {
   final Coin coin;
@@ -13,10 +15,16 @@ class CoinsDetailsPage extends StatefulWidget {
 }
 
 class _CoinsDetailsPageState extends State<CoinsDetailsPage> {
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  late NumberFormat real;
+  late Map<String, String> loc;
   final _form = GlobalKey<FormState>();
   final _value = TextEditingController();
   double quantity = 0;
+
+  readNumberFormat() {
+    loc = context.watch<AppSettings>().locale;
+    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
+  }
 
   buy() {
     if (_form.currentState!.validate()) {
@@ -31,6 +39,8 @@ class _CoinsDetailsPageState extends State<CoinsDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    readNumberFormat();
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.coin.name),
