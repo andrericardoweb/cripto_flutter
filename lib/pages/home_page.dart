@@ -1,6 +1,7 @@
 import 'package:cripto_flutter/pages/coins_page.dart';
 import 'package:cripto_flutter/pages/favorites_page.dart';
 import 'package:cripto_flutter/pages/settings_page.dart';
+import 'package:cripto_flutter/pages/wallet_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const CoinsPage(),
     const FavoritesPage(),
+    const WalletPage(),
     const SettingsPage(),
   ];
 
@@ -42,19 +44,13 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
+        type: BottomNavigationBarType.fixed,
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todas'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'Todas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favoritas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Conta',
-          ),
+              icon: Icon(Icons.favorite), label: 'Favoritas'),
+          BottomNavigationBarItem(icon: Icon(Icons.wallet), label: 'Carteira'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Conta'),
         ],
         onTap: (page) {
           pc.animateToPage(
