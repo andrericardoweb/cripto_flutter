@@ -1,5 +1,6 @@
 import 'package:cripto_flutter/pages/coins_page.dart';
 import 'package:cripto_flutter/pages/favorites_page.dart';
+import 'package:cripto_flutter/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +14,11 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 0;
   late PageController pc;
 
-  final pages = [const CoinsPage(), const FavoritesPage()];
+  final pages = [
+    const CoinsPage(),
+    const FavoritesPage(),
+    const SettingsPage(),
+  ];
 
   setPageCurrent(page) {
     setState(() {
@@ -45,6 +50,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favoritas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Conta',
           ),
         ],
         onTap: (page) {
