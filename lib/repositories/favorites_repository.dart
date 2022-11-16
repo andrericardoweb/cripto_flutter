@@ -4,14 +4,14 @@ import 'package:cripto_flutter/models/coin.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesRepository extends ChangeNotifier {
-  List<Coin> _listCoin = [];
+  final List<Coin> _listCoin = [];
 
   UnmodifiableListView<Coin> get listCoin => UnmodifiableListView(_listCoin);
 
   saveAll(List<Coin> coins) {
-    coins.forEach((coin) {
+    for (var coin in coins) {
       if (!_listCoin.contains(coin)) _listCoin.add(coin);
-    });
+    }
     notifyListeners();
   }
 

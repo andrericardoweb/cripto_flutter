@@ -1,3 +1,4 @@
+import 'package:cripto_flutter/configs/app_settings.dart';
 import 'package:cripto_flutter/models/coin.dart';
 import 'package:cripto_flutter/pages/coins_details_page.dart';
 import 'package:cripto_flutter/repositories/favorites_repository.dart';
@@ -6,15 +7,21 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CoinCard extends StatefulWidget {
-  Coin coin;
-  CoinCard({super.key, required this.coin});
+  final Coin coin;
+  const CoinCard({super.key, required this.coin});
 
   @override
   State<CoinCard> createState() => _CoinCardState();
 }
 
 class _CoinCardState extends State<CoinCard> {
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  late NumberFormat real;
+  late Map<String, String> loc;
+
+  readNumberFormat() {
+    loc = context.watch<AppSettings>().locale;
+    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
+  }
 
   static Map<String, Color> priceColor = <String, Color>{
     'up': Colors.teal,
@@ -32,6 +39,8 @@ class _CoinCardState extends State<CoinCard> {
 
   @override
   Widget build(BuildContext context) {
+    readNumberFormat();
+
     return Card(
       margin: const EdgeInsets.only(top: 12.0),
       elevation: 2,
@@ -88,7 +97,7 @@ class _CoinCardState extends State<CoinCard> {
                 itemBuilder: (context) => [
                   PopupMenuItem(
                     child: ListTile(
-                      title: Text('Remover das Favoritas'),
+                      title: const Text('Remover das Favoritas'),
                       onTap: () {
                         Navigator.pop(context);
                         Provider.of<FavoritesRepository>(context, listen: false)

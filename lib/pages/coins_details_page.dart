@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class CoinsDetailsPage extends StatefulWidget {
-  Coin coin;
+  final Coin coin;
 
-  CoinsDetailsPage({super.key, required this.coin});
+  const CoinsDetailsPage({super.key, required this.coin});
 
   @override
   State<CoinsDetailsPage> createState() => _CoinsDetailsPageState();

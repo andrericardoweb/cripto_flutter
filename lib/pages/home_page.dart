@@ -32,8 +32,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: PageView(
         controller: pc,
-        children: pages,
         onPageChanged: setPageCurrent,
+        children: pages,
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
