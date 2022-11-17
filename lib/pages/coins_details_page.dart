@@ -1,5 +1,6 @@
 import 'package:cripto_flutter/configs/app_settings.dart';
 import 'package:cripto_flutter/models/coin.dart';
+import 'package:cripto_flutter/repositories/account_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -20,15 +21,17 @@ class _CoinsDetailsPageState extends State<CoinsDetailsPage> {
   final _form = GlobalKey<FormState>();
   final _value = TextEditingController();
   double quantity = 0;
+  late AccountRepository account;
 
   readNumberFormat() {
     loc = context.watch<AppSettings>().locale;
     real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
   }
 
-  buy() {
+  buy() async {
     if (_form.currentState!.validate()) {
-      //TODO: Salvar a compra
+      //Salvar a compra
+      await account.buy(widget.coin, double.parse(_value.text));
 
       Navigator.pop(context);
 
@@ -40,7 +43,8 @@ class _CoinsDetailsPageState extends State<CoinsDetailsPage> {
   @override
   Widget build(BuildContext context) {
     readNumberFormat();
-    
+    account = Provider.of<AccountRepository>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.coin.name),
@@ -109,6 +113,8 @@ class _CoinsDetailsPageState extends State<CoinsDetailsPage> {
                     return 'Informe o valor da compra';
                   } else if (double.parse(value) < 50) {
                     return 'Compra mínima de R\$50,00';
+                  } else if (double.parse(value) > account.balance) {
+                    return 'Você não tem saldo suficiente';
                   }
                   return null;
                 },
