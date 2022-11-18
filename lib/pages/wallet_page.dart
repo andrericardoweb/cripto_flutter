@@ -16,9 +16,10 @@ class WalletPage extends StatefulWidget {
 class _WalletPageState extends State<WalletPage> {
   int index = 0;
   double totalWallet = 0;
-  double balance = 0;
+  late double balance;
   late NumberFormat real;
   late AccountRepository account;
+
   String chartLabel = '';
   double chartValue = 0;
   List<Position> wallet = [];
@@ -69,19 +70,54 @@ class _WalletPageState extends State<WalletPage> {
     });
   }
 
-  setChartData(int index) {
-    if (index < 0) return;
-
-    if (index == wallet.length) {
-      chartLabel = 'Saldo';
-      chartValue = account.balance;
-    } else {
-      chartLabel = wallet[index].coin.name;
-      chartValue = wallet[index].coin.price * wallet[index].quantity;
-    }
+  loadChart() {
+    return (account.balance <= 0)
+        ? SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : Stack(
+            alignment: Alignment.center,
+            children: [
+              AspectRatio(
+                aspectRatio: 1,
+                child: PieChart(
+                  PieChartData(
+                    sectionsSpace: 5,
+                    centerSpaceRadius: 110,
+                    sections: loadWallet(),
+                    pieTouchData: PieTouchData(
+                      touchCallback: (touch) => setState(() {
+                        index = touch.touchedSection!.touchedSectionIndex;
+                        setChartData(index);
+                      }),
+                    ),
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  Text(
+                    chartLabel,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  Text(
+                    real.format(chartValue),
+                    style: const TextStyle(fontSize: 28),
+                  ),
+                ],
+              )
+            ],
+          );
   }
 
-  loadWallet() {
+  List<PieChartSectionData> loadWallet() {
     setChartData(index);
     wallet = account.wallet;
     final sizeList = wallet.length + 1;
@@ -115,50 +151,15 @@ class _WalletPageState extends State<WalletPage> {
     });
   }
 
-  loadChart() {
-    return (account.balance <= 0)
-        ? SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 200,
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
-        : Stack(
-            alignment: Alignment.center,
-            children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: PieChart(
-                  PieChartData(
-                    sectionsSpace: 5,
-                    centerSpaceRadius: 120,
-                    sections: loadWallet(),
-                    pieTouchData: PieTouchData(
-                      touchCallback: (touch) => setState(() {
-                        index = touch.touchedSection!.touchedSectionIndex;
-                        setChartData(index);
-                      }),
-                    ),
-                  ),
-                ),
-              ),
-              Column(
-                children: [
-                  Text(
-                    chartLabel,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.teal,
-                    ),
-                  ),
-                  Text(
-                    real.format(chartValue),
-                    style: const TextStyle(fontSize: 28),
-                  ),
-                ],
-              )
-            ],
-          );
+  setChartData(int index) {
+    if (index < 0) return;
+
+    if (index == wallet.length) {
+      chartLabel = 'Saldo';
+      chartValue = account.balance;
+    } else {
+      chartLabel = wallet[index].coin.name;
+      chartValue = wallet[index].coin.price * wallet[index].quantity;
+    }
   }
 }

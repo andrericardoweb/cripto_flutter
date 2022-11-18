@@ -2,8 +2,8 @@ import 'package:cripto_flutter/database/db.dart';
 import 'package:cripto_flutter/models/coin.dart';
 import 'package:cripto_flutter/models/position.dart';
 import 'package:cripto_flutter/repositories/coin_repository.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:flutter/material.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class AccountRepository extends ChangeNotifier {
   late Database db;
@@ -40,6 +40,7 @@ class AccountRepository extends ChangeNotifier {
 
   buy(Coin coin, double value) async {
     db = await DB.instance.database;
+
     await db.transaction((txn) async {
       // Verificar se a moeda já foi comprada
       final positionCoin = await txn.query(

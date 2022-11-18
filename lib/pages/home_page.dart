@@ -15,13 +15,6 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 0;
   late PageController pc;
 
-  final pages = [
-    const CoinsPage(),
-    const FavoritesPage(),
-    const WalletPage(),
-    const SettingsPage(),
-  ];
-
   setPageCurrent(page) {
     setState(() {
       currentPage = page;
@@ -40,7 +33,12 @@ class _HomePageState extends State<HomePage> {
       body: PageView(
         controller: pc,
         onPageChanged: setPageCurrent,
-        children: pages,
+        children: const [
+          CoinsPage(),
+          FavoritesPage(),
+          WalletPage(),
+          SettingsPage(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
@@ -49,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todas'),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite), label: 'Favoritas'),
-          BottomNavigationBarItem(icon: Icon(Icons.wallet), label: 'Carteira'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet), label: 'Carteira'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Conta'),
         ],
         onTap: (page) {

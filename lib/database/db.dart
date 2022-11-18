@@ -42,7 +42,7 @@ class DB {
   String get _wallet => '''
     CREATE TABLE wallet (
       abbreviation TEXT PRIMARY KEY,
-      coin TEXT
+      coin TEXT,
       quantity TEXT
     );
   ''';

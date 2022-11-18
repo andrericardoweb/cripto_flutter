@@ -29,14 +29,18 @@ class _CoinsDetailsPageState extends State<CoinsDetailsPage> {
   }
 
   buy() async {
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
     if (_form.currentState!.validate()) {
       //Salvar a compra
       await account.buy(widget.coin, double.parse(_value.text));
 
-      Navigator.pop(context);
+      navigator.pop();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Compra realizada com sucesso!')));
+      scaffoldMessenger.showSnackBar(const SnackBar(
+        content: Text('Compra realizada com sucesso!'),
+      ));
     }
   }
 
