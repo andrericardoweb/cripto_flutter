@@ -55,6 +55,7 @@ class _WalletPageState extends State<WalletPage> {
             ),
           ),
           loadChart(),
+          loadHistoric(),
         ]),
       ),
     );
@@ -161,5 +162,27 @@ class _WalletPageState extends State<WalletPage> {
       chartLabel = wallet[index].coin.name;
       chartValue = wallet[index].coin.price * wallet[index].quantity;
     }
+  }
+
+  loadHistoric() {
+    final historic = account.historic;
+    final date = DateFormat('dd/MM/yyyy - hh:mm');
+    List<Widget> widgets = [];
+
+    for (var operation in historic) {
+      widgets.add(
+        ListTile(
+          title: Text(operation.coin.name),
+          subtitle: Text(date.format(operation.dateOperation)),
+          trailing:
+              Text(real.format((operation.coin.price * operation.quantity))),
+        ),
+      );
+      widgets.add(const Divider());
+    }
+
+    return Column(
+      children: widgets,
+    );
   }
 }
