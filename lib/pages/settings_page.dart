@@ -1,5 +1,6 @@
 import 'package:cripto_flutter/configs/app_settings.dart';
 import 'package:cripto_flutter/repositories/account_repository.dart';
+import 'package:cripto_flutter/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -42,6 +43,25 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: const Icon(Icons.edit),
               ),
             ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: OutlinedButton(
+                  onPressed: () => context.read<AuthService>().logout(),
+                  style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          'Sair do App',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      )
+                    ],
+                  )),
+            )
           ],
         ),
       ),

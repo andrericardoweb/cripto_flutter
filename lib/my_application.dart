@@ -1,4 +1,4 @@
-import 'package:cripto_flutter/pages/home_page.dart';
+import 'package:cripto_flutter/widgets/auth_check.dart';
 import 'package:flutter/material.dart';
 
 class MyApplication extends StatelessWidget {
@@ -10,7 +10,7 @@ class MyApplication extends StatelessWidget {
       title: 'Criptomoedas',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.indigo),
-      home: const HomePage(),
+      home: const AuthCheck(),
     );
   }
 }
