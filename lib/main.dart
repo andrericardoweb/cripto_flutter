@@ -19,7 +19,10 @@ void main() async {
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => AccountRepository()),
         ChangeNotifierProvider(create: (context) => AppSettings()),
-        ChangeNotifierProvider(create: (context) => FavoritesRepository()),
+        ChangeNotifierProvider(
+          create: (context) =>
+              FavoritesRepository(auth: context.read<AuthService>()),
+        ),
       ],
       child: const MyApplication(),
     ),
