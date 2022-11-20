@@ -65,7 +65,10 @@ class _CoinsDetailsPageState extends State<CoinsDetailsPage> {
                 children: [
                   SizedBox(
                     width: 50,
-                    child: Image.asset(widget.coin.icon),
+                    child: Image.network(
+                      widget.coin.icon,
+                      scale: 2.5,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Text(

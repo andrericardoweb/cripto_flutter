@@ -1,5 +1,6 @@
 import 'package:cripto_flutter/configs/app_settings.dart';
 import 'package:cripto_flutter/repositories/account_repository.dart';
+import 'package:cripto_flutter/repositories/coin_repository.dart';
 import 'package:cripto_flutter/repositories/favorites_repository.dart';
 import 'package:cripto_flutter/services/auth_services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,11 +18,17 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => AccountRepository()),
+        ChangeNotifierProvider(create: (context) => CoinRepository()),
+        ChangeNotifierProvider(
+          create: (context) => AccountRepository(
+            coins: context.read<CoinRepository>(),
+          ),
+        ),
         ChangeNotifierProvider(create: (context) => AppSettings()),
         ChangeNotifierProvider(
-          create: (context) =>
-              FavoritesRepository(auth: context.read<AuthService>()),
+          create: (context) => FavoritesRepository(
+              auth: context.read<AuthService>(),
+              coins: context.read<CoinRepository>()),
         ),
       ],
       child: const MyApplication(),

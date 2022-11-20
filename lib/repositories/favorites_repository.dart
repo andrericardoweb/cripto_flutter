@@ -11,8 +11,9 @@ class FavoritesRepository extends ChangeNotifier {
   final List<Coin> _listCoin = [];
   late FirebaseFirestore db;
   late AuthService auth;
+  CoinRepository coins;
 
-  FavoritesRepository({required this.auth}) {
+  FavoritesRepository({required this.auth, required this.coins}) {
     _startRepository();
   }
 
@@ -27,14 +28,19 @@ class FavoritesRepository extends ChangeNotifier {
 
   _readFavorites() async {
     if (auth.userLogged != null && _listCoin.isEmpty) {
-      final snapshot =
-          await db.collection('users/${auth.userLogged!.uid}/favorites').get();
+      try {
+        final snapshot = await db
+            .collection('users/${auth.userLogged!.uid}/favorites')
+            .get();
 
-      for (var doc in snapshot.docs) {
-        Coin coin = CoinRepository.table
-            .firstWhere((coin) => coin.abbreviation == doc.get('abbreviation'));
-        _listCoin.add(coin);
-        notifyListeners();
+        for (var doc in snapshot.docs) {
+          Coin coin = coins.table.firstWhere(
+              (coin) => coin.abbreviation == doc.get('abbreviation'));
+          _listCoin.add(coin);
+          notifyListeners();
+        }
+      } catch (e) {
+        print('Sem id de usuário');
       }
     }
   }
