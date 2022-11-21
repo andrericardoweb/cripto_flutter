@@ -12,4 +12,4 @@ O projeto consiste um aplicativo para listar criptomoedas tais como o Bitcoin, E
 - Integração com APIs REST da CoinBase.
 - Persistência de dados.
 
-![App](./app_show_gif.gif)
+<img src="./app_show_gif.gif" width="400">
