@@ -1,16 +1,13 @@
-# cripto_flutter
+# App Cotação de Criptomoedas
 
-A new Flutter project.
+O projeto consiste um aplicativo para listar criptomoedas tais como o Bitcoin, Ethereum, entre outras, mostrar algumas informações de histórico de preços, gráficos e outros dados.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### O que está sendo utilizado?
+- Widgets de UI: AppBar, Lists, Images, etc.
+- Navegação (Routing) entre telas.
+- Navegação usando BottomNavigation + PageViews.
+- Gerenciamento de Estado (Provider).
+- Animações.
+- Banco de Dados (SQLite e Firestore).
+- Integração com APIs REST da CoinBase.
+- Persistência de dados.
